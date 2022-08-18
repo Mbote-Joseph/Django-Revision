@@ -9,11 +9,17 @@ from .models import Post, Comment
 # Create your views here.
 def index(request):
     name= "Joseph"
-    form=PostForm
-    return render(request, 'index.html', {'name': name, 'form': form})
+    posts=Post.objects.all()
+    # p=Post.object.
+    for post in posts:
+        post.comment=post.post_comment.all()
+
+    form = CommentForm
+    total=posts.count()
+    return render(request, 'index.html', {'name': name, 'form': form, 'posts': posts, 'total': total})
 
 class PostList(ListView):
-    model = Post
+    model = Post.objects.all()
     template_name = 'myapp/index.html'
     context_object_name = 'posts'
     paginate_by = 5
@@ -38,7 +44,7 @@ class CommentList(ListView):
 
 
 class PostDetail(DetailView):
-    model = Post
+    model = Post.objects.all()
     template_name = 'myapp/detail.html'
     context_object_name = 'post'
 
